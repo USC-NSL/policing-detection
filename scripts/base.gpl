@@ -1,0 +1,28 @@
+set xlabel "Time (s)"
+set ylabel "Sequence number (in M)"
+set format x "%.1f"
+set format y "%.2f"
+set key bottom right
+$$RANGE_COMMAND
+
+set xtics nomirror
+set ytics nomirror
+
+# Line styles: try to pick pleasing colors, rather
+# than strictly primary colors or hard-to-see colors
+# like gnuplot's default yellow.  Make the lines thick
+# so they're easy to see in small plots in papers.
+set style line 1 lt rgb "#A00000" lw 1 pt 2
+set style line 2 lt rgb "#00A000" lw 1 pt 1
+set style line 3 lt rgb "#5060D0" lw 1 pt 6
+set style line 4 lt rgb "#F25900" lw 1 pt 9
+
+# all combined
+set term pdfcairo dashed transparent fontscale 0.5 enhanced linewidth 4 rounded font "Arial,20" size 5in,3.5in
+set output "$$NAME.pdf"
+plot "$$NAME.dataset.white.uarrow" using ($1-$$START_TIME):(($2-$$START_SEQ)/1000000.0) with points ls 3 t 'Data (First transmit)',\
+ "$$NAME.dataset.red.uarrow" using ($1-$$START_TIME):(($2-$$START_SEQ)/1000000.0) with points ls 1 t 'Data Retransmits',\
+ "$$NAME.dataset.green.line" using ($1-$$START_TIME):(($2-$$START_SEQ)/1000000.0) with lines lt 1 lw 2 lc 0 t 'Acked Data',\
+ "$$NAME.loss_points" using ($1-$$START_TIME):(($2-$$START_SEQ)/1000000.0) with lines lt 2 lw 2 lc 3 t 'Policing Rate',\
+ "$$NAME.loss_points_2" using ($1-$$START_TIME):(($2-$$START_SEQ)/1000000.0) with lines lt 2 lw 2 lc 4 t 'Policing Rate (2)'
+set output
