@@ -1,10 +1,46 @@
 #! /usr/bin/env python
+#
+# Analyzes the TCP flow(s) in a PCAP file and detects traffic policing.
+#
+# This engine dissects the packets stored in a PCAP file by first assigning each
+# packet to a flow based on the 4-tuple (source/destination IP address and
+# port). There is NO handling for 4-tuple reuse, e.g. when a connection is
+# properly terminated and new connection is established using the same 4-tuple.
+#
+# Each flow is then divided into segments, where a segment is defined as data
+# from endpoint A followed by data from endpoint B (i.e. a typical
+# request/response pattern). The policing detection then runs on each segment,
+# separately for each flow direction and produces one output line per execution
+# using the following format:
+#
+# <input filename>,<flow index>,<segment index>,<direction>,<number of data
+# packets>,<number of losses>,<policing results+>
+#
+# Direction is either "a2b" or "b2a"
+# Policing results is composed of multiple columns, where the first two columns
+# correspond to the analysis using all losses, and the other two columns
+# correspond to the analysis ignoring the first and last two losses (i.e.
+# cutoff=2).
+#
+# The policing results are structured as follows:
+# <Is policed?>,[<result code>,<policing rate>,<data before first loss>]
+#
+# <Is policed?> is either "True" or "False"
+# The result codes are defined in policing_detector.py
+# Policing rate and data before first loss are "null" if no policing has been
+# detected
+#
+# In a typical trace from the M-Lab NDT dataset only a single flow is captured
+# with almost all data flowing from endpoint B (the server) to endpoint A (the
+# client) indicating a single request/response pattern. Thus, the output
+# generated usually includes two lines total (one per direction, there is only
+# one segment) with policing only detectable for the server-to-client flow (i.e.
+# direction "b2a").
 
 import dpkt
 import sys
 
 from annotated_packet import *
-from output import *
 from policing_detector import *
 from tcp_flow import *
 from tcp_segment import *
@@ -12,12 +48,6 @@ from tcp_util import *
 
 # Maximum number of packets that will be handled overall (NOT per flow)
 MAX_NUM_PACKETS = -1
-
-# True, if policing detection algorithm is executed and results are printed to
-# stdout
-RUN_POLICING_DETECTION = True
-
-output_function = write_csv_row_for_endpoint_per_packet
 
 if len(sys.argv) < 2:
     print "Missing parameter(s)"
@@ -62,11 +92,6 @@ for ts, buf in pcap:
 
 input_file.close()
 
-if not RUN_POLICING_DETECTION:
-    # Output CSV
-    output_function(flow.endpoint_a, "output.csv", True)
-    exit(0)
-
 flow_index = 0
 for _, flow in flows.items():
     flow.post_process()
@@ -110,10 +135,6 @@ for _, flow in flows.items():
                 num_data_packets,
                 num_losses,
                 policing_str)
-
-            # Output CSV
-            # segment_output_filename = "%s_%d" % (output_filename, segment_index)
-            # output_function(data_endpoint, segment_output_filename, False)
 
         segment_index += 1
     flow_index += 1
