@@ -70,16 +70,18 @@
 <p>An example output for a non-policed trace would be:</p>
 
 <blockquote>
-<p>trace.pcap,0,0,b2a,1234,0,False,[code 1, null, null],False,[code 1, null, null]
-This indicates that policing was ruled out because insufficient loss took place.</p>
+<p>trace.pcap,0,0,b2a,1234,0,False,[code 1, null, null],False,[code 1, null, null]</p>
 </blockquote>
+
+<p>This indicates that policing was ruled out because insufficient loss took place.</p>
 
 <p>A policed trace would look like:</p>
 
 <blockquote>
-<p>trace.pcap,0,0,a2b,1234,123,True,[code 0, 500000 bps, 50000 bytes burst],True,[code 0, 500000 bps, 50000 bytes burst]
-This indicates that a policer was detected and that it is estimated it enforces a rate of 500kbps with a burst size of 50kB.</p>
+<p>trace.pcap,0,0,a2b,1234,123,True,[code 0, 500000 bps, 50000 bytes burst],True,[code 0, 500000 bps, 50000 bytes burst]</p>
 </blockquote>
+
+<p>This indicates that a policer was detected and that it is estimated it enforces a rate of 500kbps with a burst size of 50kB.</p>
 
 <h1>
 <a id="analyzing-the-mlab-ndt-dataset" class="anchor" href="#analyzing-the-mlab-ndt-dataset" aria-hidden="true"><span class="octicon octicon-link"></span></a>Analyzing the MLab NDT Dataset</h1>
