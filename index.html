@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Policing Detection : Detect and characterize policing in network traces">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Policing Detection</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/USC-NSL/policing-detection">View on GitHub</a>
+
+          <h1 id="project_title">Policing Detection</h1>
+          <h2 id="project_tagline">Detect and characterize policing in network traces</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/USC-NSL/policing-detection/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/USC-NSL/policing-detection/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>Large content downloads consume a significant fraction of network resources. Increasingly, ISPs have resorted to actively managing this high-volume traffic through techniques like policing. A policer enforces a pre-configured rate per flow by dropping any packets that exceed the rate. Based on a large-scale measurement study conducted on one of the largest content providers in the world, we show that policing hurts content providers, ISPs, and users. From a sampled dataset of over 270 billion packets served to over 28,400 ASes, we find that depending on the region between 2.8 and 6.6% of the traffic is policed. This policing induces an average loss rate between 5.1 and 10.6%, an almost 4x increase in loss compared to non-policed flows. Policing also results in a distributionally worse playback quality. We conclude by demonstrating that there exist alternatives, such as pacing and shaping, that can help achieve traffic management goals while avoiding the deleterious effects of policing.</p>
+
+<h1>
+<a id="the-code" class="anchor" href="#the-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Code</h1>
+
+<p>The repository hosts a public version of the policer detection algorithm (PD). You can get the code simply by cloning the repository:
+<code>$ git clone https://github.com/USC-NSL/policing-detection.git</code></p>
+
+<p>The algorithm itself is invoked from <a href="https://github.com/USC-NSL/policing-detection/blob/master/process_pcap.py">process_pcap.py</a>, which simply takes the pcap trace file as an argument:
+<code>$ process_pcap.py trace.pcap</code></p>
+
+<p>The output is in the CSV format with a row for each segment of data in the trace. The column format is:
+1. input file name.
+1. flow index.
+1. segment index within the flow.
+1. direction ("a2b" or "b2a").
+1. number of data packets.
+1. number of losses.
+1. policing results.</p>
+
+<p>There are two policing outputs, representing two slightly different runs of the algorithm with different tweaked parameters. Each output contains:
+1. A Boolean indicating whether policing was detected (True) or ruled out (False).
+1. An array containing</p>
+
+<ol>
+<li>The code of the heuristic that ruled out policing. Code 0 indicates that policing was detected.</li>
+<li>The estimated policed rate.</li>
+<li>The size of the initial burst seen before the policer took effect.</li>
+</ol>
+
+<p>An example output for a non-policed trace would be:
+<code>trace.pcap,0,0,b2a,1234,0,False,[code 1, null, null],False,[code 1, null, null]</code>
+This indicates that policing was ruled out because insufficient loss took place.</p>
+
+<p>A policed trace would look like:
+<code>trace.pcap,0,0,a2b,1234,123,True,[code 0, 500000 bps, 50000 bytes burst],True,[code 0, 500000 bps, 50000 bytes burst]</code>
+This indicates that a policer was detected and that it is estimated it enforces a rate of 500kbps with a burst size of 50kB.</p>
+
+<h1>
+<a id="analyzing-the-mlab-ndt-dataset" class="anchor" href="#analyzing-the-mlab-ndt-dataset" aria-hidden="true"><span class="octicon octicon-link"></span></a>Analyzing the MLab NDT Dataset</h1>
+
+<p>We analyzed a sub-sample of <a href="http://measurementlab.net/tools/ndt">the MLab NDT Dataset</a> and published the results in a technical report.</p>
+
+<p>As of August 2015, the full MLab NDT dataset is 79TB. As such we sampled the dataset by only analyzing traces from the first day of each month. The output was collected into a <a href="https://github.com/USC-NSL/policing-detection/blob/master/data/ndt/ndt-data.csv.gz">single large CSV</a> file which collects the output of the PD algorithm for each trace, with an additional column prepended to indicate which trace tarball the PCAP trace file was extracted from.</p>
+
+<h1>
+<a id="people" class="anchor" href="#people" aria-hidden="true"><span class="octicon octicon-link"></span></a>People</h1>
+
+<ul>
+<li>Tobias Flach (USC)</li>
+<li>Pavlos Papageorge (Google)</li>
+<li>Andreas Terzis (Google)</li>
+<li>Luis Pedrosa (USC)</li>
+<li>Ethan Katz-Bassett (USC)</li>
+<li>Ramesh Govindan (USC)</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Policing Detection maintained by <a href="https://github.com/USC-NSL">USC-NSL</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
