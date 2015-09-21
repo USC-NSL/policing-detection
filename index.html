@@ -36,11 +36,17 @@
 <h1>
 <a id="the-code" class="anchor" href="#the-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Code</h1>
 
-<p>The repository hosts a public version of the policer detection algorithm (PD). You can get the code simply by cloning the repository:
-<code>$ git clone https://github.com/USC-NSL/policing-detection.git</code></p>
+<p>The repository hosts a public version of the policer detection algorithm (PD). You can get the code simply by cloning the repository:</p>
 
-<p>The algorithm itself is invoked from <a href="https://github.com/USC-NSL/policing-detection/blob/master/process_pcap.py">process_pcap.py</a>, which simply takes the pcap trace file as an argument:
-<code>$ process_pcap.py trace.pcap</code></p>
+<blockquote>
+<p>$ git clone <a href="https://github.com/USC-NSL/policing-detection.git">https://github.com/USC-NSL/policing-detection.git</a></p>
+</blockquote>
+
+<p>The algorithm itself is invoked from <a href="https://github.com/USC-NSL/policing-detection/blob/master/process_pcap.py">process_pcap.py</a>, which simply takes the pcap trace file as an argument:</p>
+
+<blockquote>
+<p>$ process_pcap.py trace.pcap</p>
+</blockquote>
 
 <p>The output is in the CSV format with a row for each segment of data in the trace. The column format is:
 1. input file name.
@@ -61,13 +67,19 @@
 <li>The size of the initial burst seen before the policer took effect.</li>
 </ol>
 
-<p>An example output for a non-policed trace would be:
-<code>trace.pcap,0,0,b2a,1234,0,False,[code 1, null, null],False,[code 1, null, null]</code>
-This indicates that policing was ruled out because insufficient loss took place.</p>
+<p>An example output for a non-policed trace would be:</p>
 
-<p>A policed trace would look like:
-<code>trace.pcap,0,0,a2b,1234,123,True,[code 0, 500000 bps, 50000 bytes burst],True,[code 0, 500000 bps, 50000 bytes burst]</code>
+<blockquote>
+<p>trace.pcap,0,0,b2a,1234,0,False,[code 1, null, null],False,[code 1, null, null]
+This indicates that policing was ruled out because insufficient loss took place.</p>
+</blockquote>
+
+<p>A policed trace would look like:</p>
+
+<blockquote>
+<p>trace.pcap,0,0,a2b,1234,123,True,[code 0, 500000 bps, 50000 bytes burst],True,[code 0, 500000 bps, 50000 bytes burst]
 This indicates that a policer was detected and that it is estimated it enforces a rate of 500kbps with a burst size of 50kB.</p>
+</blockquote>
 
 <h1>
 <a id="analyzing-the-mlab-ndt-dataset" class="anchor" href="#analyzing-the-mlab-ndt-dataset" aria-hidden="true"><span class="octicon octicon-link"></span></a>Analyzing the MLab NDT Dataset</h1>
