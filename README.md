@@ -41,9 +41,9 @@ As of August 2015, the full MLab NDT dataset is 79TB. As such we sampled the dat
 
 
 # People
-* Tobias Flach (USC)
+* [Tobias Flach](http://nsl.cs.usc.edu/~tobiasflach/) (USC)
 * Pavlos Papageorge (Google)
 * Andreas Terzis (Google)
-* Luis Pedrosa (USC)
-* Ethan Katz-Bassett (USC)
-* Ramesh Govindan (USC)
+* [Luis Pedrosa](http://nsl.cs.usc.edu/~lpedrosa/) (USC)
+* [Ethan Katz-Bassett])(http://www-bcf.usc.edu/~katzbass/) (USC)
+* [Ramesh Govindan](http://sruti.usc.edu/) (USC)
