@@ -9,6 +9,7 @@ The algorithm itself is invoked from [process_pcap.py](https://github.com/USC-NS
 > $ process_pcap.py trace.pcap
 
 The output is in the CSV format with a row for each segment of data in the trace. The column format is:
+
 1. input file name.
 1. flow index.
 1. segment index within the flow.
@@ -18,9 +19,10 @@ The output is in the CSV format with a row for each segment of data in the trace
 1. policing results.
 
 There are two policing outputs, representing two slightly different runs of the algorithm with different tweaked parameters. Each output contains:
+
 1. A Boolean indicating whether policing was detected (True) or ruled out (False).
 1. An array containing
-  1. The code of the heuristic that ruled out policing. Code 0 indicates that policing was detected.
+  1. The code of the heuristic that ruled out policing. Code 0 indicates that policing was detected. Please refer to [policing_detector.py](https://github.com/USC-NSL/policing-detection/blob/master/policing_detector.py#L43) for the remaining codes.
   1. The estimated policed rate.
   1. The size of the initial burst seen before the policer took effect.
 
@@ -36,8 +38,9 @@ This indicates that a policer was detected and that it is estimated it enforces 
 
 
 # Validating against Controlled Lab Traces
-To validate PD in a controlled setting we generated a large set of packet traces using a carrier-grade network device from a major US router vendor. We use a simple experimental topology where each component emulates a real-world counterpart: 
-1. Packets transmitted by the server first pass through a network emulator to configure RTT and loss rate. This emulates losses and delays incurred in transit across the Internet.
+To validate PD in a controlled setting we generated a large set of packet traces using a carrier-grade network device from a major US router vendor. We use a simple experimental topology where each component emulates a real-world counterpart:
+
+1. Packets transmitted by the server first pass through a network emulator to configure RTT and loss rate. This emulates losses and delays incurred in transit across the Internet. Early on we experimented with varying the RTT but it had no effect on the algorithm, so we settled with a constant 100ms.
 1. The traffic is subsequently forwarded to the network device, to enforce policing or a bottleneck rate, before reaching the client endpoint. This emulates the client ISP.
 
 Packet capture is done server-side, reflecting the same setup we use in the production environment. Each configuration was run 10 times for statistical relevance (with some exceptions outlined below). Overall, we collected and analyzed 12,695 chunks across 2,539 traces under varying network conditions and using varying traffic pattens. We expected our algorithm to mark a chunk as policed if and only if the trace sees packet loss and the device was configured to enforce policing. Our ability to control this lab setting gives us ground truth about the underlying root causes for packet loss.
@@ -68,5 +71,5 @@ As of August 2015, the full MLab NDT dataset is 79TB. As such we sampled the dat
 * Pavlos Papageorge (Google)
 * Andreas Terzis (Google)
 * [Luis Pedrosa](http://nsl.cs.usc.edu/~lpedrosa/) (USC)
-* [Ethan Katz-Bassett])(http://www-bcf.usc.edu/~katzbass/) (USC)
+* [Ethan Katz-Bassett](http://www-bcf.usc.edu/~katzbass/) (USC)
 * [Ramesh Govindan](http://sruti.usc.edu/) (USC)
