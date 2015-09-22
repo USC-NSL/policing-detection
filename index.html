@@ -51,23 +51,30 @@
 <p>$ process_pcap.py trace.pcap</p>
 </blockquote>
 
-<p>The output is in the CSV format with a row for each segment of data in the trace. The column format is:
-1. input file name.
-1. flow index.
-1. segment index within the flow.
-1. direction ("a2b" or "b2a").
-1. number of data packets.
-1. number of losses.
-1. policing results.</p>
+<p>The output is in the CSV format with a row for each segment of data in the trace. The column format is:</p>
 
-<p>There are two policing outputs, representing two slightly different runs of the algorithm with different tweaked parameters. Each output contains:
-1. A Boolean indicating whether policing was detected (True) or ruled out (False).
-1. An array containing</p>
+<ol>
+<li>input file name.</li>
+<li>flow index.</li>
+<li>segment index within the flow.</li>
+<li>direction ("a2b" or "b2a").</li>
+<li>number of data packets.</li>
+<li>number of losses.</li>
+<li>policing results.</li>
+</ol>
+
+<p>There are two policing outputs, representing two slightly different runs of the algorithm with different tweaked parameters. Each output contains:</p>
+
+<ol>
+<li>A Boolean indicating whether policing was detected (True) or ruled out (False).</li>
+<li>An array containing
 
 <ol>
 <li>The code of the heuristic that ruled out policing. Code 0 indicates that policing was detected.</li>
 <li>The estimated policed rate.</li>
 <li>The size of the initial burst seen before the policer took effect.</li>
+</ol>
+</li>
 </ol>
 
 <p>An example output for a non-policed trace would be:</p>
