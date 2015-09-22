@@ -70,7 +70,7 @@
 <li>An array containing
 
 <ol>
-<li>The code of the heuristic that ruled out policing. Code 0 indicates that policing was detected.</li>
+<li>The code of the heuristic that ruled out policing. Code 0 indicates that policing was detected. Please refer to <a href="https://github.com/USC-NSL/policing-detection/blob/master/policing_detector.py#L43">policing_detector.py</a> for the remaining codes.</li>
 <li>The estimated policed rate.</li>
 <li>The size of the initial burst seen before the policer took effect.</li>
 </ol>
@@ -96,9 +96,12 @@
 <h1>
 <a id="validating-against-controlled-lab-traces" class="anchor" href="#validating-against-controlled-lab-traces" aria-hidden="true"><span class="octicon octicon-link"></span></a>Validating against Controlled Lab Traces</h1>
 
-<p>To validate PD in a controlled setting we generated a large set of packet traces using a carrier-grade network device from a major US router vendor. We use a simple experimental topology where each component emulates a real-world counterpart: 
-1. Packets transmitted by the server first pass through a network emulator to configure RTT and loss rate. This emulates losses and delays incurred in transit across the Internet.
-1. The traffic is subsequently forwarded to the network device, to enforce policing or a bottleneck rate, before reaching the client endpoint. This emulates the client ISP.</p>
+<p>To validate PD in a controlled setting we generated a large set of packet traces using a carrier-grade network device from a major US router vendor. We use a simple experimental topology where each component emulates a real-world counterpart:</p>
+
+<ol>
+<li>Packets transmitted by the server first pass through a network emulator to configure RTT and loss rate. This emulates losses and delays incurred in transit across the Internet. Early on we experimented with varying the RTT but it had no effect on the algorithm, so we settled with a constant 100ms.</li>
+<li>The traffic is subsequently forwarded to the network device, to enforce policing or a bottleneck rate, before reaching the client endpoint. This emulates the client ISP.</li>
+</ol>
 
 <p>Packet capture is done server-side, reflecting the same setup we use in the production environment. Each configuration was run 10 times for statistical relevance (with some exceptions outlined below). Overall, we collected and analyzed 12,695 chunks across 2,539 traces under varying network conditions and using varying traffic pattens. We expected our algorithm to mark a chunk as policed if and only if the trace sees packet loss and the device was configured to enforce policing. Our ability to control this lab setting gives us ground truth about the underlying root causes for packet loss.</p>
 
@@ -145,7 +148,8 @@
 <li>Andreas Terzis (Google)</li>
 <li>
 <a href="http://nsl.cs.usc.edu/%7Elpedrosa/">Luis Pedrosa</a> (USC)</li>
-<li>[Ethan Katz-Bassett])(<a href="http://www-bcf.usc.edu/%7Ekatzbass/">http://www-bcf.usc.edu/~katzbass/</a>) (USC)</li>
+<li>
+<a href="http://www-bcf.usc.edu/%7Ekatzbass/">Ethan Katz-Bassett</a> (USC)</li>
 <li>
 <a href="http://sruti.usc.edu/">Ramesh Govindan</a> (USC)</li>
 </ul>
