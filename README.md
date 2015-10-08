@@ -1,5 +1,12 @@
 # Policing Detection
-Large content downloads consume a significant fraction of network resources. Increasingly, ISPs have resorted to actively managing this high-volume traffic through techniques like policing. A policer enforces a pre-configured rate per flow by dropping any packets that exceed the rate. Based on a large-scale measurement study conducted on one of the largest content providers in the world, we show that policing hurts content providers, ISPs, and users. From a sampled dataset of over 270 billion packets served to over 28,400 ASes, we find that depending on the region between 2.8 and 6.6% of the traffic is policed. This policing induces an average loss rate between 5.1 and 10.6%, an almost 4x increase in loss compared to non-policed flows. Policing also results in a distributionally worse playback quality. We conclude by demonstrating that there exist alternatives, such as pacing and shaping, that can help achieve traffic management goals while avoiding the deleterious effects of policing.
+Large flows like videos consume significant bandwidth. Some ISPs actively manage this high volume with techniques like policing, which enforces a flow rate by dropping excess traffic. While the existence of policing is well known, our contribution is an Internet-wide study quantifying the prevalence and impact on quality metrics. We developed a heuristic to identify policing from server-side traces and built a pipeline to deploy it at scale on traces from Google CDN servers worldwide. Using a dataset of 270 billion packets served to 28,400 client ASes, we find that, depending on region, up to 7% of lossy transfers have been policed. Loss rates average six times higher when a trace is policed, and it hurts video playback quality. We show that alternatives to policing, like pacing and shaping, can achieve traffic management goals while avoiding the deleterious effects of policing.
+
+# Technical Report
+In addition to the Google dataset, the USC authors analyzed data collected by
+the Network Diagnostics Tool (NDT) via the M-Lab infrastructure over the last
+six years. The results are discussed in the following technical report that
+serves as a supplement to the main paper (the report is also part of the
+tarball): ["A Longitudinal Analysis of Traffic Policing Across the Web"](https://goo.gl/yMXssC).
 
 # The Code
 The repository hosts a public version of the policer detection algorithm (PD). You can get the code simply by cloning the repository:
