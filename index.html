@@ -32,12 +32,12 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a id="policing-detection" class="anchor" href="#policing-detection" aria-hidden="true"><span class="octicon octicon-link"></span></a>Policing Detection</h1>
+<a id="policing-detection" class="anchor" href="#policing-detection" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Policing Detection</h1>
 
 <p>Large flows like videos consume significant bandwidth. Some ISPs actively manage this high volume with techniques like policing, which enforces a flow rate by dropping excess traffic. While the existence of policing is well known, our contribution is an Internet-wide study quantifying the prevalence and impact on quality metrics. We developed a heuristic to identify policing from server-side traces and built a pipeline to deploy it at scale on traces from Google CDN servers worldwide. Using a dataset of 270 billion packets served to 28,400 client ASes, we find that, depending on region, up to 7% of lossy transfers have been policed. Loss rates average six times higher when a trace is policed, and it hurts video playback quality. We show that alternatives to policing, like pacing and shaping, can achieve traffic management goals while avoiding the deleterious effects of policing.</p>
 
 <h1>
-<a id="technical-report" class="anchor" href="#technical-report" aria-hidden="true"><span class="octicon octicon-link"></span></a>Technical Report</h1>
+<a id="technical-report" class="anchor" href="#technical-report" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Technical Report</h1>
 
 <p>In addition to the Google dataset, the USC authors analyzed data collected by
 the Network Diagnostics Tool (NDT) via the M-Lab infrastructure over the last
@@ -46,7 +46,7 @@ serves as a supplement to the main paper (the report is also part of the
 tarball): <a href="https://goo.gl/yMXssC">"A Longitudinal Analysis of Traffic Policing Across the Web"</a>.</p>
 
 <h1>
-<a id="the-code" class="anchor" href="#the-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Code</h1>
+<a id="the-code" class="anchor" href="#the-code" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Code</h1>
 
 <p>The repository hosts a public version of the policer detection algorithm (PD). You can get the code simply by cloning the repository:</p>
 
@@ -103,7 +103,7 @@ tarball): <a href="https://goo.gl/yMXssC">"A Longitudinal Analysis of Traffic Po
 <p>This indicates that a policer was detected and that it is estimated it enforces a rate of 500kbps with a burst size of 50kB.</p>
 
 <h1>
-<a id="validating-against-controlled-lab-traces" class="anchor" href="#validating-against-controlled-lab-traces" aria-hidden="true"><span class="octicon octicon-link"></span></a>Validating against Controlled Lab Traces</h1>
+<a id="validating-against-controlled-lab-traces" class="anchor" href="#validating-against-controlled-lab-traces" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Validating against Controlled Lab Traces</h1>
 
 <p>To validate PD in a controlled setting we generated a large set of packet traces using a carrier-grade network device from a major US router vendor. We use a simple experimental topology where each component emulates a real-world counterpart:</p>
 
@@ -112,10 +112,10 @@ tarball): <a href="https://goo.gl/yMXssC">"A Longitudinal Analysis of Traffic Po
 <li>The traffic is subsequently forwarded to the network device, to enforce policing or a bottleneck rate, before reaching the client endpoint. This emulates the client ISP.</li>
 </ol>
 
-<p>Packet capture is done server-side, reflecting the same setup we use in the production environment. Each configuration was run 10 times for statistical relevance (with some exceptions outlined below). Overall, we collected and analyzed 12,695 chunks across 2,539 traces under varying network conditions and using varying traffic pattens. We expected our algorithm to mark a chunk as policed if and only if the trace sees packet loss and the device was configured to enforce policing. Our ability to control this lab setting gives us ground truth about the underlying root causes for packet loss.</p>
+<p>Packet capture is done server-side, reflecting the same setup we use in the production environment. Each configuration was run 10 times for statistical relevance (with some exceptions outlined below). Overall, we collected and analyzed 14,195 chunks across 2,839 traces under varying network conditions and using varying traffic pattens. We expected our algorithm to mark a chunk as policed if and only if the trace sees packet loss and the device was configured to enforce policing. Our ability to control this lab setting gives us ground truth about the underlying root causes for packet loss.</p>
 
 <h2>
-<a id="network-conditions" class="anchor" href="#network-conditions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Network Conditions</h2>
+<a id="network-conditions" class="anchor" href="#network-conditions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Network Conditions</h2>
 
 <p>We considered three scenarios that are frequent causes of packet loss in real networks:</p>
 
@@ -123,40 +123,42 @@ tarball): <a href="https://goo.gl/yMXssC">"A Longitudinal Analysis of Traffic Po
 <li>
 <em>Policing:</em> We configured the device to enforce traffic policing in much the same way an ISP would to throttle their users, and we confirmed with the router vendor that our configurations are consistent with ISP practice. Across multiple trials, we set the policing rates to 0.5Mbps, 1.5Mbps, 3Mbps, and 10Mbps, and burst sizes to 8kB, 100kB, 1MB, and 2MB.</li>
 <li>
-<em>Congestion:</em> We emulate a bottleneck link which gets congested by one or more flows. We enforce the bottleneck capacity through shaping with packets being dropped once the shaper's queue is full. We varied bottleneck link rates and queue capacities across trials using the same values used for the policing scenario.</li>
+<em>Congestion:</em> We emulate a bottleneck link which gets congested by one or more flows. We enforce the bottleneck capacity through shaping with packets being dropped once the shaper's queue is full, or by one of three AQM schemes (CoDel, RED, or PIE). We varied bottleneck link rates and queue capacities across trials using the same values used for the policing scenario.</li>
 <li>
 <em>Random Loss:</em> We used a network emulator to randomly drop 1% and 2% of packets to simulate the potential behavior of a faulty connection. These particular experiments runs were run 100 times instead of the usual 10, to explore more potential loss patterns.</li>
 </ul>
 
 <h2>
-<a id="traffic-patterns" class="anchor" href="#traffic-patterns" aria-hidden="true"><span class="octicon octicon-link"></span></a>Traffic Patterns</h2>
+<a id="traffic-patterns" class="anchor" href="#traffic-patterns" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Traffic Patterns</h2>
 
 <p>We emulate video download traffic, similar to the type of traffic we want to analyze in production. As such, we developed <a href="https://github.com/USC-NSL/policing-detection/blob/master/chunkperf.cpp">chunkperf</a> which mimics the behavior of a video streaming service that streams video data in segments. The client requests five 2MB-large chunks of data from the server with a configurable delay between the successful delivery of a chunk and the request for the next one.</p>
 
 <p>Some traces in the congestion scenario include cross-traffic. For some traces we run iperf in the background with one or more TCP streams. This emulates congestion from general background traffic in the network. For other traces we let two chunkperf connections operate concurrently, each with independent chunk delays. This  emulates a client viewing multiple video streams at once, with PD only has having visibility into one of them.</p>
 
 <h2>
-<a id="results" class="anchor" href="#results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Results</h2>
+<a id="results" class="anchor" href="#results" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Results</h2>
 
 <p>The result of running all of the traces is included in a <a href="https://github.com/USC-NSL/policing-detection/blob/master/data/validation/validation.csv.gz">single CSV file</a> and also summarized in a <a href="https://docs.google.com/spreadsheets/d/1vYZhHzB-kJelho6ZtYLphuMUaa-0SdfzjViUDVTyKMQ/edit?usp=sharing">Google Sheet</a>. We also include <a href="https://github.com/USC-NSL/policing-detection/blob/master/data/validation/">the first trial of each configuration used for validation</a>. Please contact us for more traces, if needed.</p>
 
 <h1>
-<a id="analyzing-the-mlab-ndt-dataset" class="anchor" href="#analyzing-the-mlab-ndt-dataset" aria-hidden="true"><span class="octicon octicon-link"></span></a>Analyzing the MLab NDT Dataset</h1>
+<a id="analyzing-the-mlab-ndt-dataset" class="anchor" href="#analyzing-the-mlab-ndt-dataset" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Analyzing the MLab NDT Dataset</h1>
 
 <p>We analyzed a sub-sample of <a href="http://measurementlab.net/tools/ndt">the MLab NDT Dataset</a> and published the results in a technical report.</p>
 
 <p>As of August 2015, the full MLab NDT dataset is 79TB. As such we sampled the dataset by only analyzing traces from the first day of each month. The output was collected into <a href="https://github.com/USC-NSL/policing-detection/blob/master/data/ndt/">a series of CSV files</a> which collect the output of the PD algorithm for each trace, with an additional column prepended to indicate which trace tarball the PCAP trace file was extracted from.</p>
 
 <h1>
-<a id="people" class="anchor" href="#people" aria-hidden="true"><span class="octicon octicon-link"></span></a>People</h1>
+<a id="people" class="anchor" href="#people" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>People</h1>
 
 <ul>
 <li>
-<a href="http://nsl.cs.usc.edu/%7Etobiasflach/">Tobias Flach</a> (USC)</li>
+<a href="http://nsl.cs.usc.edu/%7Etobiasflach/">Tobias Flach</a> (USC and Google)</li>
 <li>Pavlos Papageorge (Google)</li>
 <li>Andreas Terzis (Google)</li>
 <li>
 <a href="http://nsl.cs.usc.edu/%7Elpedrosa/">Luis Pedrosa</a> (USC)</li>
+<li>Yuchung Cheng (Google)</li>
+<li>Tayeb Karim (Google)</li>
 <li>
 <a href="http://www-bcf.usc.edu/%7Ekatzbass/">Ethan Katz-Bassett</a> (USC)</li>
 <li>
