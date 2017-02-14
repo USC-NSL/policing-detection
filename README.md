@@ -2,7 +2,7 @@
 Large flows like videos consume significant bandwidth. Some ISPs actively manage this high volume with techniques like policing, which enforces a flow rate by dropping excess traffic. While the existence of policing is well known, our contribution is an Internet-wide study quantifying the prevalence and impact on quality metrics. We developed a heuristic to identify policing from server-side traces and built a pipeline to deploy it at scale on traces from Google CDN servers worldwide. Using a dataset of 270 billion packets served to 28,400 client ASes, we find that, depending on region, up to 7% of lossy transfers have been policed. Loss rates average six times higher when a trace is policed, and it hurts video playback quality. We show that alternatives to policing, like pacing and shaping, can achieve traffic management goals while avoiding the deleterious effects of policing.
 
 The corresponding paper ["An Internet-Wide Analysis of Traffic
-Policing"](https://github.com/USC-NSL/policing-detection/policing_sigcomm_paper.pdf)
+Policing"](https://github.com/USC-NSL/policing-detection/blob/master/policing_sigcomm_paper.pdf)
 was published at SIGCOMM 2016. A related study about T-Mobile's Binge On service
 (which uses traffic policing) titled ["Binge On Under the Microscope"](http://dd.meddle.mobi/bingeon.html) was
 published at the co-located Internet-QoE Workshop.
