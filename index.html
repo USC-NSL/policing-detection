@@ -34,7 +34,22 @@
         <h1>
 <a id="policing-detection" class="anchor" href="#policing-detection" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Policing Detection</h1>
 
-<p>Large flows like videos consume significant bandwidth. Some ISPs actively manage this high volume with techniques like policing, which enforces a flow rate by dropping excess traffic. While the existence of policing is well known, our contribution is an Internet-wide study quantifying the prevalence and impact on quality metrics. We developed a heuristic to identify policing from server-side traces and built a pipeline to deploy it at scale on traces from Google CDN servers worldwide. Using a dataset of 270 billion packets served to 28,400 client ASes, we find that, depending on region, up to 7% of lossy transfers have been policed. Loss rates average six times higher when a trace is policed, and it hurts video playback quality. We show that alternatives to policing, like pacing and shaping, can achieve traffic management goals while avoiding the deleterious effects of policing.</p>
+<p>Large flows like videos consume significant bandwidth.
+  Some ISPs actively manage this high volume with techniques like policing, which enforces a flow rate 
+  by dropping excess traffic. While the existence of policing is well known, our contribution is an
+  Internet-wide study quantifying the prevalence and impact on quality metrics. We developed a
+  heuristic to identify policing from server-side traces and built a pipeline to deploy it at scale on 
+  traces from Google CDN servers worldwide. Using a dataset of 270 billion packets served to 28,400 client 
+  ASes, we find that, depending on region, up to 7% of lossy transfers have been policed. Loss rates average 
+  six times higher when a trace is policed, and it hurts video playback quality. We show that alternatives to 
+  policing, like pacing and shaping, can achieve traffic management goals while avoiding the deleterious effects 
+  of policing.</p>
+        
+<p>The corresponding paper <a href="https://github.com/USC-NSL/policing-detection/blob/master/policing_sigcomm_paper.pdf">"An 
+  Internet-Wide Analysis of TrafficPolicing"</a> was published at SIGCOMM 2016. A related study about 
+  T-Mobile's Binge On service (which uses traffic policing) titled 
+  <a href="http://dd.meddle.mobi/bingeon.html">"Binge On Under the Microscope"</a> was
+  published at the co-located Internet-QoE Workshop.</p>
 
 <h1>
 <a id="technical-report" class="anchor" href="#technical-report" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Technical Report</h1>
